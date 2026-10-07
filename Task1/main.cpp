@@ -50,6 +50,36 @@ int main(){
 	        pFile << N << "," << rectangle_time << "," << rectangle_error << "," << monte_carlo_time << "," << monte_carlo_error << "\n";
 	    }
 	}
+
+	const int max_threads = omp_get_max_threads();
+    const int fixed_N = 10000000;
+
+	string treads_filename="treads_result.csv";
+	
+	{
+		ofstream pFile(treads_filename);
+		pFile << "threads,rectangle_time_us,monte_carlo_time_us\n";
+
+		for (int threads = 1; threads <= max_threads; ++threads) {
+		    omp_set_num_threads(threads);
+				
+	        integrate(F, params);
+	        integrate_monte_carlo(F, params);
+	        
+	        auto begin = steady_clock::now();
+	        integrate(F, params);
+	        auto end = steady_clock::now();
+	        double rectangle_time = duration<double, micro>(end - begin).count();
+	
+	        begin = steady_clock::now();
+	        integrate_monte_carlo(F, params);
+	        end = steady_clock::now();
+	        double monte_carlo_time = duration<double, micro>(end - begin).count();
+	        
+	        pFile << threads << "," << rectangle_time << "," << monte_carlo_time << "\n";
+	    }
+	}
+	
     
 	return 0;
 }

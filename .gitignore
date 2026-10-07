@@ -69,3 +69,8 @@ Testing/
 
 # Python
 .ipynb_checkpoints
+
+#
+.vscode
+*.csv
+*.png
