@@ -21,6 +21,14 @@ double func(double x){
     return pow(params.at("c") - x, 2);
 }
 
+double oscillating(double x){
+    return sin(30.0 * x);
+}
+
+double oscillating_exact(double a, double b){
+    return (cos(30.0 * a) - cos(30.0 * b)) / 30.0;
+}
+
 void adapt(function<double(double)> F, double exact){
 	unordered_map<double, double> points;
 	string adaptive_filename="adaptive_result.csv";
@@ -48,6 +56,55 @@ void adapt(function<double(double)> F, double exact){
 			pFile << point.first << "," << point.second << "," << F(point.first) << "\n";
 		}
 	}
+}
+
+void adaptive_studies(function<double(double)> F, double exact){
+    {
+        ofstream pFile(files_folder / "adaptive_eps_result.csv");
+        pFile << "eps,adaptive_time_us,adaptive_error,adaptive_integral\n";
+		
+        for (double eps = 1e-1; eps >= 1e-7; eps /= 10.0){
+            params["eps"] = eps;
+
+            unordered_map<double, double> points;
+
+            auto begin = steady_clock::now();
+            double result = integrate_adaptive(F, params, points);
+            auto end = steady_clock::now();
+
+            double elapsed = duration<double, micro>(end - begin).count();
+
+            pFile << eps << "," << elapsed << "," << abs(result - exact) / abs(exact) << "," << result << "\n";
+        }
+    }
+
+    const double old_a = params.at("a");
+    const double old_b = params.at("b");
+    const double old_eps = 1.0;
+    params["eps"] = 1e-6;
+
+	function<double(double)> F_oscillating = oscillating;
+    const double exact_oscillating = oscillating_exact(old_a, old_b);
+	
+    {
+        ofstream pFile(files_folder / "adaptive_N_result.csv");
+        pFile << "N,adaptive_time_us,adaptive_integral,absolute_error\n";
+
+        for (int N = 1000; N <= 100000; N += 1000){
+            params["N"] = N;
+
+            unordered_map<double, double> points;
+
+            auto begin = steady_clock::now();
+            double result = integrate_adaptive_N(F_oscillating, params, points);
+            auto end = steady_clock::now();
+
+            double elapsed = duration<double, micro>(end - begin).count();
+
+            pFile << N << "," << elapsed << "," << result << "," << abs(result - exact_oscillating) << "\n";
+        }
+    }
+    params["eps"] = old_eps;
 }
 
 int main(){
@@ -118,6 +175,7 @@ int main(){
 	}
 
 	adapt(F, exact);
+    adaptive_studies(F, exact);
     
 	return 0;
 }

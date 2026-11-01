@@ -74,3 +74,23 @@ double integrate_adaptive(function<double(double)> f, const unordered_map<string
 
     return adapt_int(f, a, b, int0, eps, points);
 }
+
+double integrate_adaptive_N(function<double(double)> f, const unordered_map<string, double>& params, unordered_map<double, double>& points){
+    double a = params.at("a");
+    double b = params.at("b");
+    int N = (int)params.at("N");
+    double eps = params.at("eps");
+
+    double h = (b - a) / N;
+    double sum = 0;
+
+    for (int i = 0; i < N; ++i){
+        double left = a + i * h;
+        double right = (i == N - 1) ? b : left + h;
+        double int0 = f((left + right) / 2.0) * (right - left);
+
+        sum += adapt_int(f, left, right, int0, eps / N, points);
+    }
+
+    return sum;
+}

@@ -10,3 +10,4 @@ cmake --build ./build
 python integration_plotter.py
 python treads_plotter.py
 python adaptive_plotter.py
+python adaptive_study_plotter.py

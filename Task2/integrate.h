@@ -10,3 +10,5 @@ double integrate(function<double(double)> f, const unordered_map<string, double>
 double integrate_monte_carlo(function<double(double)> f, const unordered_map<string, double>& params);
 
 double integrate_adaptive(function<double(double)> f, const unordered_map<string, double>& params, unordered_map<double, double>& points);
+
+double integrate_adaptive_N(function<double(double)> f, const unordered_map<string, double>& params, unordered_map<double, double>& points);
