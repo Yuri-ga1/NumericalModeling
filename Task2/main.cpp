@@ -90,7 +90,7 @@ void adaptive_studies(function<double(double)> F, double exact){
         ofstream pFile(files_folder / "adaptive_N_result.csv");
         pFile << "N,adaptive_time_us,adaptive_integral,absolute_error\n";
 
-        for (int N = 1000; N <= 100000; N += 1000){
+        for (int N = 1; N <= 200; N++){
             params["N"] = N;
 
             unordered_map<double, double> points;
