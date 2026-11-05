@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 
 
-add_executable(motion main.cpp particle.cpp clsSort.cpp clsWorld.cpp)
+add_executable(motion main.cpp particle.cpp clsWorld.cpp)
 
 target_link_libraries(motion PRIVATE OpenMP::OpenMP_CXX)
 
