@@ -1,22 +1,15 @@
 #pragma once
-
 #include <vector>
-
+#include "particle.h"
 #include "WorldParams.h"
-#include "clsSort.h"
-#include "clsGrid.hpp"
 
+class clsWorld {
+    public:
+    WorldParams& wp;
 
-class clsWorld{
-	public:
-	WorldParams wp;
-	size_t N_sorts;
-	vector<clsSort> sorts;
-	grid Density;
+    vector<Particle> particles;
 
-	clsWorld();
-	void pushSorts();
-	void saveDensity();
-	void saveFields();
-	void processBoundary();
+    clsWorld(WorldParams& _wp);
+
+    void push_all();
 };

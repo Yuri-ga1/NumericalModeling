@@ -1,28 +1,24 @@
 #pragma once
 #include <iostream>
-#include <math.h>
-#include <functional>
-#include <chrono>
 #include <string>
+#include <math.h>
 
 #include "clsVector.hpp"
 
 using namespace std;
 
 class Particle {
-	public:
-		double _m;
-		double _q;
-		clsVector<double> _r;
-		clsVector<double> _p;
+    public:
+    double _m;
+    double _q;
+    vec _r;
+    vec _p;
 
-	Particle(double m, double q, clsVector<double> r, clsVector<double> p);
-	
-	double energy();
+    Particle(double m, double q, vec r, vec p);
+    double energy();
 
-	void push(vec& E, vec& B, double dt);
-	void push_simple(vec& E, vec& B, double dt);
-	void print_params();
-	void print_to(ostream& st);
-
+    void push(vec& E, vec& B, double dt);
+    void push_euler(vec& E, vec& B, double dt);
+    void print_params();
+    void print_to(ostream& st);
 };
