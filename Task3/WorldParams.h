@@ -58,6 +58,6 @@ class WorldParams_grad : public WorldParams_cross {
     public:
 
     WorldParams_grad() {
-        gradient = 0.001;
+        gradient = 0.005;
     }
 };

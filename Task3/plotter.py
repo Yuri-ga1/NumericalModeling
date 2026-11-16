@@ -27,7 +27,7 @@ def plot_group(particle, plot):
             files_folder.glob(f"{task}_{particle}_dt*.csv"),
             key=lambda path: int(path.stem.split("_dt")[-1]),
         )
-        if (name == "kinetic" and task.startswith("magnetic")) or not filenames:
+        if not filenames:
             axis.text(0.5, 0.5, "NO DATA", ha="center", va="center", transform=axis.transAxes, fontsize=18)
             axis.set_axis_off()
             continue
